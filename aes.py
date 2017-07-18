@@ -151,12 +151,9 @@ def subBytesInv(text):
                                         if(text[i][j] == hex(sbox[l][c])):
                                                 column = c
                                                 line = l
-                                                #print"trouve : {} colonne {}  ligne {}".format(text[i][j],column,line)
                                         c = c+1
                                 l = l +1
-                        #print "line : {}  colonne : {}".format(line, column)
                         tmpstr = "0x"+str(intToHexOne(line))+str(intToHexOne(column))
-                        #print "tmpstr : {}".format(tmpstr)
                         tmp2.append(tmpstr)
                         j=j+1
                 tmp.append(tmp2)
@@ -264,34 +261,13 @@ def aes_encrypt(text,sizeOfBytes,key):
                                 i= i+1
                         tmptext.append(tmp)
                         j = j+1
-                #print "text before addRound {}".format(tmptext)
-                #tmptext = intToBin(tmptext)
-                #print tmptext
-                #tmptext = binToHex(tmptext)
-                #print tmptext
                 tmptext = addRoundKey(tmptext,key)
-                #print "text after addRound {}".format(tmptext)
                 for n in range(9):
 
-                	#tmptext = intToHex(tmptext)
                      	tmptext = subBytes(tmptext)
-                        #print "After subBytes : {} ".format(intToHex(tmptext))
-                        #tmptext = subBytesInv(intToHex(tmptext))
-                        #print "After subBytesInv : {} ".format(tmptext)
-                        #tmptext = subBytes(hexToInt(tmptext))
-                        #print "intToHex : {}".format(tmptext)
-                        #print "Before shiftrows : {} ".format(tmptext)
                         tmptext = shiftRows(intToHex(tmptext))
-                        #print "After shiftrows : {} ".format(tmptext)
-                        #tmptext = shiftRowsInv(tmptext)
-                        #print "After shiftrowsInv : {} ".format(tmptext)
-                        #tmptext = shiftRows(tmptext)
-                        tmptext = mixColumns(tmptext)
-                        tmptext = mixColumnsInv(intToHex(tmptext))
                         tmptext = mixColumns(intToHex(tmptext))
-                        #print "After mix : {} ".format(tmptext)
                         tmptext = addRoundKey(tmptext,key)
-                        #print "text after addRound {}".format(tmptext)
                 tmptext = subBytes(tmptext)
                 tmptext = intToHex(tmptext)
                 tmptext = shiftRows(tmptext)
@@ -323,19 +299,12 @@ def aes_decrypt(text,sizeOfBytes,key):
                         tmptext.append(tmp)
                         j = j+1
                 tmptext = addRoundKey(hexToInt(tmptext),key)
-                #print "text after addRound {}".format(tmptext)
                 for n in range(9):
                         tmptext = shiftRowsInv(tmptext)
                         tmptext = subBytesInv(intToHex(tmptext))
                         tmptext = addRoundKey(hexToInt(tmptext),key)
                         tmptext = mixColumnsInv(intToHex(tmptext))
 
-                #print "text before addRound {}".format(tmptext)
-                #tmptext = intToBin(tmptext)
-                #print tmptext
-                #tmptext = binToHex(tmptext)
-                #print tmptext
-                #print "text after addRound {}".format(tmptext)
                 tmptext = shiftRowsInv(tmptext)
                 tmptext = subBytesInv(intToHex(tmptext))
                 tmptext = addRoundKey(hexToInt(tmptext),key)
@@ -348,7 +317,6 @@ def aes_decrypt(text,sizeOfBytes,key):
 def hexToAscii(text):
 	textSplit = text.split("0x")
 	tmpText = ""
-	#print textSplit
 	for hexa in textSplit:
 		if hexa !=  "":
 			if len(hexa) != 1:
@@ -396,11 +364,8 @@ if sys.argv[1] == "-e":
 elif sys.argv[1] == "-d":
 	ftextEncrypted = open("textEncrypted.txt","r")
 	textEncrypted = ftextEncrypted.read()
-	#print "text Ecrypted : {}".format(textEncrypted)
 	ftextDecrypted = open("textDecrypted.txt","wb")
 	textDecrypted = aes_decrypt(textEncrypted.split('&')[:-1],sizeOfBytes,key)
-	#print "text dechiffre : {}".format(textDecrypted)
 	textDecryptedHexToAscii = hexToAscii(textDecrypted)
-	#print "text dechiffre hex to ascii : {}".format(textDecryptedHexToAscii)
 	ftextDecrypted.write(textDecryptedHexToAscii)
 #print text
