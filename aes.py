@@ -266,7 +266,7 @@ def aes_encrypt(text,sizeOfBytes,key):
 
                      	tmptext = subBytes(tmptext)
                         tmptext = shiftRows(intToHex(tmptext))
-                        tmptext = mixColumns(intToHex(tmptext))
+                        tmptext = mixColumns(tmptext)
                         tmptext = addRoundKey(tmptext,key)
                 tmptext = subBytes(tmptext)
                 tmptext = intToHex(tmptext)
@@ -355,11 +355,9 @@ server = 0;
 if sys.argv[1] == "-e":
 	ftext = open("text.txt","r")
 	text = ftext.read()
-	print "text a chiffrer : {}".format(text)
 	ftextEncrypted = open("textEncrypted.txt","wb")
 	textEncrypted = aes_encrypt(text,sizeOfBytes,key)
 	ftextEncrypted.write(textEncrypted)
-	print "text chiffre : {}".format(textEncrypted)
 
 elif sys.argv[1] == "-d":
 	ftextEncrypted = open("textEncrypted.txt","r")
